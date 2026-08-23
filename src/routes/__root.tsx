@@ -4,7 +4,8 @@ import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import { AppShell } from "@/components/app-shell";
 import appCss from "../styles.css?url";
 
-const APP_NAME = "Quay";
+import t from "@/lib/i18n";
+const APP_NAME = t("APP_NAME");
 
 export const Route = createRootRoute({
   head: () => ({
@@ -12,7 +13,7 @@ export const Route = createRootRoute({
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: APP_NAME },
-      { name: "description", content: "Post a trip. Travel agencies bid." },
+            { name: "description", content: t("DESCRIPTION") },
       { name: "theme-color", content: "#1a1916" },
     ],
     links: [
@@ -26,14 +27,11 @@ export const Route = createRootRoute({
         href: "https://fonts.gstatic.com",
         crossOrigin: "anonymous",
       },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap",
-      },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&family=Figtree:wght@400;500;600&display=swap" },
     ],
   }),
   component: () => (
-    <html lang="en" className="antialiased" suppressHydrationWarning>
+    <html lang="ar" dir="rtl" className="antialiased" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>

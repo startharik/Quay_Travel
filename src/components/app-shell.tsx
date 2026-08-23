@@ -8,6 +8,7 @@ import { useCurrentUserState } from "@/lib/auth/use-current-user";
 import { getMyProfile } from "@/lib/quay-api";
 import type { Profile } from "@/lib/quay-types";
 import { cn } from "@/lib/utils";
+import t from "@/lib/i18n";
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -40,28 +41,28 @@ export function AppShell({ children }: { children: ReactNode }) {
             <span className="flex size-8 items-center justify-center rounded-[var(--radius-sm)] bg-ink text-bg">
               <Anchor className="size-4" strokeWidth={1.75} />
             </span>
-            <span className="font-display text-xl tracking-tight">Quay</span>
+            <span className="font-display text-xl tracking-tight">{t("APP_NAME")}</span>
           </Link>
 
           <nav className="hidden items-center gap-1 md:flex">
             <NavLink to="/how-it-works" active={pathname === "/how-it-works"}>
-              How it works
+                          {t("HOW_IT_WORKS")}
             </NavLink>
             {user ? (
               <>
                 <NavLink to="/desk" active={pathname === "/desk"}>
-                  {role === "agency" ? "Marketplace" : "Desk"}
+                                  {role === "agency" ? t("MARKETPLACE") : t("DESK")}
                 </NavLink>
                 {role === "traveler" ? (
                   <NavLink to="/trips/new" active={pathname === "/trips/new"}>
-                    New request
+                                      {t("NEW_REQUEST")}
                   </NavLink>
                 ) : null}
                 <NavLink to="/inbox" active={pathname === "/inbox"}>
-                  Inbox
+                                  {t("INBOX")}
                 </NavLink>
                 <NavLink to="/agencies" active={pathname === "/agencies"}>
-                  Agencies
+                                  {t("AGENCIES")}
                 </NavLink>
               </>
             ) : null}
@@ -76,13 +77,13 @@ export function AppShell({ children }: { children: ReactNode }) {
                   to="/profile"
                   className="hidden text-sm text-muted hover:text-ink sm:inline"
                 >
-                  Profile
+                                  {t("PROFILE")}
                 </Link>
                 <UserButton />
               </>
             ) : (
               <Button asChild size="sm">
-                <Link to="/login">Sign in</Link>
+                <Link to="/login">{t("SIGN_IN")}</Link>
               </Button>
             )}
           </div>

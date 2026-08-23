@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { GROK_PROVIDERS, authClient, authEnabled, signIn } from "@/lib/auth/client";
+import t from "@/lib/i18n";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
 
 export const Route = createFileRoute("/login")({ component: Login });
@@ -42,9 +43,9 @@ function Login() {
   return (
     <div className="mx-auto grid min-h-[calc(100dvh-4rem)] max-w-md place-items-center px-4 py-10">
       <div className="w-full rounded-[var(--radius-xl)] border border-border bg-bg-elevated p-6 shadow-[var(--shadow-card)] sm:p-8">
-        <p className="text-xs font-medium uppercase tracking-[0.18em] text-accent">Quay</p>
-        <h1 className="mt-2 font-display text-3xl tracking-tight">Sign in to the desk</h1>
-        <p className="mt-2 text-sm text-muted">Travelers post briefs. Agencies bid. One account, one role.</p>
+        <p className="text-xs font-medium uppercase tracking-[0.18em] text-accent">{t("APP_NAME")}</p>
+                <h1 className="mt-2 font-display text-3xl tracking-tight">{t("SIGN_IN_TO_DESK")}</h1>
+                <p className="mt-2 text-sm text-muted">{t("TRAVELERS_POST")}</p>
 
         {authEnabled ? (
           <div className="mt-6 space-y-2">
@@ -56,38 +57,38 @@ function Login() {
                 className="w-full"
                 onClick={() => signIn(p.providerId, { callbackURL: "/onboarding" })}
               >
-                Continue with {p.label}
+                          {t("SIGN_IN")} {" "} {p.label}
               </Button>
             ))}
           </div>
         ) : (
-          <p className="mt-6 text-sm text-muted">Sign-in is disabled.</p>
+          <p className="mt-6 text-sm text-muted">{t("SIGN_IN_DISABLED")}</p>
         )}
 
         <div className="my-6 flex items-center gap-3 text-xs uppercase tracking-wider text-subtle">
           <span className="h-px flex-1 bg-border" />
-          or email
+          {t("OR_EMAIL")}
           <span className="h-px flex-1 bg-border" />
         </div>
 
         <form onSubmit={onEmail} className="space-y-3">
           {mode === "up" ? (
             <div className="grid gap-1.5">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name">{t("NAME")}</Label>
               <Input id="name" name="name" required placeholder="Maya Chen" />
             </div>
           ) : null}
           <div className="grid gap-1.5">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">{t("EMAIL")}</Label>
             <Input id="email" name="email" type="email" required placeholder="you@studio.com" />
           </div>
           <div className="grid gap-1.5">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">{t("PASSWORD")}</Label>
             <Input id="password" name="password" type="password" required minLength={8} />
           </div>
           {error ? <p className="text-sm text-danger">{error}</p> : null}
           <Button type="submit" className="w-full" disabled={busy}>
-            {mode === "up" ? "Create account" : "Sign in with email"}
+                      {mode === "up" ? t("CREATE_ACCOUNT") : t("SIGN_IN_WITH_EMAIL")}
           </Button>
         </form>
 
@@ -96,11 +97,11 @@ function Login() {
           className="mt-4 text-sm text-muted hover:text-ink"
           onClick={() => setMode(mode === "up" ? "in" : "up")}
         >
-          {mode === "up" ? "Already have an account? Sign in" : "New here? Create an account"}
+          {mode === "up" ? t("ALREADY_HAVE_ACCOUNT") : t("NEW_HERE_CREATE_ACCOUNT") }
         </button>
         <p className="mt-6 text-center text-xs text-subtle">
           <Link to="/how-it-works" className="underline">
-            How Quay works
+                      {t("HOW_QUAY_WORKS")}
           </Link>
         </p>
       </div>
