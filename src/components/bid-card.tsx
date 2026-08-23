@@ -1,6 +1,7 @@
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { StatusPill } from "@/components/status-pill";
+import t from "@/lib/i18n";
 import type { Bid } from "@/lib/quay-types";
 import { formatMoney } from "@/lib/utils";
 
@@ -20,12 +21,12 @@ export function BidCard({
           <p className="text-xs font-medium uppercase tracking-[0.14em] text-muted">{bid.agencyTag}</p>
           <h3 className="mt-1 font-display text-xl leading-tight">{bid.agencyName}</h3>
           <p className="mt-1 text-sm text-muted">
-            {bid.rating.toFixed(1)} · {bid.reviews} reviews
+            {bid.rating.toFixed(1)} · {bid.reviews} {t("REVIEWS")}
           </p>
         </div>
         <div className="text-right">
           <p className="font-display text-2xl tabular-nums leading-none">{formatMoney(bid.price)}</p>
-          <p className="mt-1 text-xs text-muted">Offer valid until {bid.validUntil}</p>
+          <p className="mt-1 text-xs text-muted">{t("OFFER_VALID_UNTIL_LABEL")} {bid.validUntil}</p>
         </div>
       </div>
       <p className="mt-4 text-base font-medium">{bid.title}</p>
@@ -42,7 +43,7 @@ export function BidCard({
         <StatusPill status={bid.status} />
         {canAccept && bid.status === "pending" ? (
           <Button variant="accent" onClick={onAccept}>
-            Accept this offer
+            {t("ACCEPT_THIS_OFFER")}
           </Button>
         ) : null}
       </div>

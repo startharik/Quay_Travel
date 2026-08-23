@@ -168,6 +168,71 @@ var Check = createLucideIcon("check", [["path", {
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
+var CircleUserRound = createLucideIcon("circle-user-round", [
+	["path", {
+		d: "M18 20a6 6 0 0 0-12 0",
+		key: "1qehca"
+	}],
+	["circle", {
+		cx: "12",
+		cy: "10",
+		r: "4",
+		key: "1h16sb"
+	}],
+	["circle", {
+		cx: "12",
+		cy: "12",
+		r: "10",
+		key: "1mglay"
+	}]
+]);
+/**
+* @license lucide-react v0.510.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Compass = createLucideIcon("compass", [["path", {
+	d: "m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z",
+	key: "9ktpf1"
+}], ["circle", {
+	cx: "12",
+	cy: "12",
+	r: "10",
+	key: "1mglay"
+}]]);
+/**
+* @license lucide-react v0.510.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var House = createLucideIcon("house", [["path", {
+	d: "M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8",
+	key: "5wwlr5"
+}], ["path", {
+	d: "M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z",
+	key: "1d0kgt"
+}]]);
+/**
+* @license lucide-react v0.510.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Inbox = createLucideIcon("inbox", [["polyline", {
+	points: "22 12 16 12 14 15 10 15 8 12 2 12",
+	key: "o97t9d"
+}], ["path", {
+	d: "M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z",
+	key: "oot6mr"
+}]]);
+/**
+* @license lucide-react v0.510.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
 var MapPin = createLucideIcon("map-pin", [["path", {
 	d: "M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0",
 	key: "1r0f0z"
@@ -176,6 +241,19 @@ var MapPin = createLucideIcon("map-pin", [["path", {
 	cy: "10",
 	r: "3",
 	key: "ilqhr7"
+}]]);
+/**
+* @license lucide-react v0.510.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var Plus = createLucideIcon("plus", [["path", {
+	d: "M5 12h14",
+	key: "1ays0h"
+}], ["path", {
+	d: "M12 5v14",
+	key: "s699le"
 }]]);
 /**
 * @license lucide-react v0.510.0 - ISC
@@ -224,4 +302,4 @@ var Users = createLucideIcon("users", [
 	}]
 ]);
 //#endregion
-export { Calendar as a, Anchor as c, Check as i, TriangleAlert as n, ArrowRight as o, MapPin as r, ArrowLeft as s, Users as t };
+export { Inbox as a, CircleUserRound as c, ArrowRight as d, ArrowLeft as f, MapPin as i, Check as l, TriangleAlert as n, House as o, Anchor as p, Plus as r, Compass as s, Users as t, Calendar as u };

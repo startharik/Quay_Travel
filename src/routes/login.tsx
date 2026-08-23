@@ -3,7 +3,7 @@ import { useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { GROK_PROVIDERS, authClient, authEnabled, signIn } from "@/lib/auth/client";
+import { authClient, authEnabled } from "@/lib/auth/client";
 import t from "@/lib/i18n";
 import { useCurrentUserState } from "@/lib/auth/use-current-user";
 
@@ -47,21 +47,7 @@ function Login() {
                 <h1 className="mt-2 font-display text-3xl tracking-tight">{t("SIGN_IN_TO_DESK")}</h1>
                 <p className="mt-2 text-sm text-muted">{t("TRAVELERS_POST")}</p>
 
-        {authEnabled ? (
-          <div className="mt-6 space-y-2">
-            {GROK_PROVIDERS.map((p) => (
-              <Button
-                key={p.providerId}
-                type="button"
-                variant="outline"
-                className="w-full"
-                onClick={() => signIn(p.providerId, { callbackURL: "/onboarding" })}
-              >
-                          {t("SIGN_IN")} {" "} {p.label}
-              </Button>
-            ))}
-          </div>
-        ) : (
+        {authEnabled ? null : (
           <p className="mt-6 text-sm text-muted">{t("SIGN_IN_DISABLED")}</p>
         )}
 

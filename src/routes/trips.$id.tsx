@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input, Textarea } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useCurrentUser } from "@/lib/auth/use-current-user";
+import t from "@/lib/i18n";
 import { acceptBid, getMyProfile, getTrip, listMessages, placeBid, sendMessage } from "@/lib/quay-api";
 import { lodgingLabel, type Bid, type Message, type Profile, type TripRequest } from "@/lib/quay-types";
 import { formatMoney, formatRange, nightsBetween } from "@/lib/utils";
@@ -49,9 +50,9 @@ function TripDetail() {
   if (!trip) {
     return (
       <div className="py-20 text-center">
-        <h1 className="font-display text-3xl">Request not found</h1>
+        <h1 className="font-display text-3xl">{t("REQUEST_NOT_FOUND")}</h1>
         <Link to="/desk" className="mt-4 inline-block text-sm text-accent">
-          Back to desk
+          {t("BACK_TO_DESK")}
         </Link>
       </div>
     );
@@ -66,7 +67,7 @@ function TripDetail() {
 
   async function onAccept(bidId: string) {
     await acceptBid({ data: bidId });
-    setNotice("Offer accepted. Message the agency below to confirm details.");
+    setNotice(t("OFFER_ACCEPTED_NOTICE"));
     await reload();
   }
 
@@ -105,7 +106,7 @@ function TripDetail() {
     <div className="space-y-8">
       <Link to="/desk" className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-ink">
         <ArrowLeft className="size-4" />
-        Desk
+        {t("DESK")}
       </Link>
 
       {notice ? (
@@ -120,30 +121,30 @@ function TripDetail() {
             <h1 className="mt-1 font-display text-4xl tracking-tight">{trip.destination}</h1>
             <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted">{trip.notes}</p>
             <dl className="mt-6 grid gap-3 text-sm sm:grid-cols-2">
-              <Info icon={<Calendar className="size-4" />} label="Dates">
-                {formatRange(trip.startDate, trip.endDate)} · {nightsBetween(trip.startDate, trip.endDate)} nights
-                {trip.flexible ? " · flexible" : ""}
+              <Info icon={<Calendar className="size-4" />} label={t("DATES")}>
+                {formatRange(trip.startDate, trip.endDate)} · {nightsBetween(trip.startDate, trip.endDate)} {t("NIGHTS")}
+                {trip.flexible ? ` · ${t("DATES_FLEXIBLE")}` : ""}
               </Info>
-              <Info icon={<Users className="size-4" />} label="Party">
-                {trip.adults} adult{trip.adults === 1 ? "" : "s"}
-                {trip.children ? `, ${trip.children} child${trip.children === 1 ? "" : "ren"}` : ""}
+              <Info icon={<Users className="size-4" />} label={t("PARTY")}>
+                {trip.adults} {trip.adults === 1 ? t("ADULT") : t("ADULTS")}
+                {trip.children ? `, ${trip.children} ${trip.children === 1 ? t("CHILD") : t("CHILDREN")}` : ""}
               </Info>
-              <Info icon={<MapPin className="size-4" />} label="Style">
+              <Info icon={<MapPin className="size-4" />} label={t("STYLE")}>
                 {trip.tripType} · {lodgingLabel(trip.lodging)}
               </Info>
-              <Info label="Posted by">{trip.travelerName}</Info>
-              {trip.origin ? <Info label="Flying from">{trip.origin}</Info> : null}
+              <Info label={t("POSTED_BY")}>{trip.travelerName}</Info>
+              {trip.origin ? <Info label={t("FLYING_FROM_LABEL")}>{trip.origin}</Info> : null}
             </dl>
           </div>
           <div className="flex flex-col items-start gap-3 sm:items-end">
             <StatusPill status={trip.status} />
             <div className="text-left sm:text-right">
-              <p className="text-xs text-muted">Ceiling</p>
+              <p className="text-xs text-muted">{t("CEILING")}</p>
               <p className="font-display text-3xl tabular-nums">{formatMoney(trip.budget)}</p>
             </div>
             {canBid && !showBidForm ? (
               <Button variant="accent" onClick={() => setShowBidForm(true)}>
-                {myBid ? "Update your bid" : "Place a bid"}
+                {myBid ? t("UPDATE_YOUR_BID") : t("PLACE_A_BID")}
               </Button>
             ) : null}
           </div>
@@ -152,39 +153,39 @@ function TripDetail() {
 
       {showBidForm && canBid ? (
         <form onSubmit={onBid} className="space-y-4 rounded-[var(--radius-xl)] border border-border bg-bg-elevated p-5 sm:p-8">
-          <h2 className="font-display text-2xl">Your offer</h2>
+          <h2 className="font-display text-2xl">{t("YOUR_OFFER")}</h2>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="grid gap-1.5">
-              <Label htmlFor="title">Package title</Label>
+              <Label htmlFor="title">{t("PACKAGE_TITLE")}</Label>
               <Input id="title" name="title" required defaultValue={myBid?.title ?? ""} />
             </div>
             <div className="grid gap-1.5">
-              <Label htmlFor="price">Price (USD)</Label>
+              <Label htmlFor="price">{t("PRICE_USD")}</Label>
               <Input id="price" name="price" type="number" min={100} required defaultValue={myBid?.price ?? trip.budget} />
             </div>
           </div>
           <div className="grid gap-1.5">
-            <Label htmlFor="highlights">Why this package</Label>
+            <Label htmlFor="highlights">{t("WHY_THIS_PACKAGE")}</Label>
             <Textarea id="highlights" name="highlights" defaultValue={myBid?.highlights ?? ""} />
           </div>
           <div className="grid gap-1.5">
-            <Label htmlFor="includes">Included (one per line)</Label>
+            <Label htmlFor="includes">{t("INCLUDED_ONE_PER_LINE")}</Label>
             <Textarea
               id="includes"
               name="includes"
-              defaultValue={myBid?.includes.join("\n") ?? "Flights\nTransfers\nHotel with breakfast"}
+              defaultValue={myBid?.includes.join("\n") ?? "رحلات\nنقل\nفندق مع إفطار"}
             />
           </div>
           <div className="grid max-w-xs gap-1.5">
-            <Label htmlFor="validUntil">Offer valid until</Label>
+            <Label htmlFor="validUntil">{t("OFFER_VALID_UNTIL")}</Label>
             <Input id="validUntil" name="validUntil" type="date" defaultValue="2026-09-15" />
           </div>
           <div className="flex gap-2">
             <Button type="submit" variant="accent">
-              Submit bid
+              {t("SUBMIT_BID")}
             </Button>
             <Button type="button" variant="ghost" onClick={() => setShowBidForm(false)}>
-              Cancel
+              {t("CANCEL")}
             </Button>
           </div>
         </form>
@@ -192,13 +193,13 @@ function TripDetail() {
 
       <section className="space-y-4">
         <h2 className="font-display text-2xl tracking-tight">
-          {bids.length === 0 ? "Bids" : `${bids.length} bid${bids.length === 1 ? "" : "s"}`}
+          {bids.length === 0 ? t("BIDS") : `${bids.length} ${bids.length === 1 ? t("BIDS_HEADER_SINGULAR") : t("BIDS_HEADER_PLURAL")}`}
         </h2>
         {bids.length === 0 ? (
           <div className="rounded-[var(--radius-xl)] border border-dashed border-border-strong px-6 py-12 text-center">
-            <p className="font-display text-xl">No bids yet</p>
+            <p className="font-display text-xl">{t("NO_BIDS_YET")}</p>
             <p className="mt-2 text-sm text-muted">
-              {canBid ? "Be the first desk to answer this brief." : "Agencies will appear here as they bid."}
+              {canBid ? t("FIRST_DESK_PROMPT") : t("AGENCIES_WILL_APPEAR")}
             </p>
           </div>
         ) : (
@@ -212,9 +213,9 @@ function TripDetail() {
 
       {canMessage ? (
         <section className="space-y-4">
-          <h2 className="font-display text-2xl">Thread</h2>
+          <h2 className="font-display text-2xl">{t("THREAD")}</h2>
           <div className="space-y-3 rounded-[var(--radius-xl)] border border-border bg-bg-elevated p-5">
-            {messages.length === 0 ? <p className="text-sm text-muted">No messages yet.</p> : null}
+            {messages.length === 0 ? <p className="text-sm text-muted">{t("NO_MESSAGES_YET")}</p> : null}
             {messages.map((m) => (
               <div key={m.id} className="border-b border-border pb-3 last:border-0 last:pb-0">
                 <p className="text-xs text-muted">
@@ -224,13 +225,13 @@ function TripDetail() {
               </div>
             ))}
             <form onSubmit={onMessage} className="flex flex-col gap-2 pt-2 sm:flex-row">
-              <Input name="body" placeholder="Write to the other desk" className="flex-1" />
-              <Button type="submit">Send</Button>
+              <Input name="body" placeholder={t("WRITE_TO_OTHER_DESK")} className="flex-1" />
+              <Button type="submit">{t("SEND")}</Button>
             </form>
           </div>
         </section>
       ) : (
-        <p className="text-sm text-muted">Message the traveler after you place a bid.</p>
+        <p className="text-sm text-muted">{t("MESSAGE_TRAVELER_AFTER_BID")}</p>
       )}
     </div>
   );

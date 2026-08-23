@@ -71,9 +71,9 @@ export type Thread = {
 };
 
 export function lodgingLabel(v: Lodging) {
-  if (v === "budget") return "Budget";
-  if (v === "luxury") return "Luxury";
-  return "Mid-range";
+  if (v === "budget") return "اقتصادي";
+  if (v === "luxury") return "فاخر";
+  return "متوسط";
 }
 
 export function placeKeyFrom(destination: string) {

@@ -1,4 +1,5 @@
 import type { BidStatus, RequestStatus } from "@/lib/quay-types";
+import t from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 export function StatusPill({ status }: { status: RequestStatus | BidStatus }) {
@@ -11,12 +12,12 @@ export function StatusPill({ status }: { status: RequestStatus | BidStatus }) {
     declined: "bg-surface text-muted",
   };
   const label: Record<string, string> = {
-    open: "Open",
-    awarded: "Awarded",
-    closed: "Closed",
-    pending: "Pending",
-    accepted: "Accepted",
-    declined: "Declined",
+    open: t("STATUS_OPEN"),
+    awarded: t("STATUS_AWARDED"),
+    closed: t("STATUS_CLOSED"),
+    pending: t("STATUS_PENDING"),
+    accepted: t("STATUS_ACCEPTED"),
+    declined: t("STATUS_DECLINED"),
   };
   return (
     <span

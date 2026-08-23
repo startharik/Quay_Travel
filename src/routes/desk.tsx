@@ -5,6 +5,7 @@ import { TripCard } from "@/components/trip-card";
 import { Button } from "@/components/ui/button";
 import { getMyProfile, listMarketplace, listMyBids, listMyTrips } from "@/lib/quay-api";
 import type { Profile, TripRequest } from "@/lib/quay-types";
+import t from "@/lib/i18n";
 
 export const Route = createFileRoute("/desk")({ component: () => (
   <RequireAuth>
@@ -47,40 +48,38 @@ function Desk() {
     <div className="space-y-10">
       <section className="max-w-2xl">
         <p className="text-xs font-medium uppercase tracking-[0.18em] text-accent">{profile.displayName}</p>
-        <h1 className="mt-2 font-display text-4xl tracking-tight sm:text-5xl">
-          {isAgency ? "Open briefs on the quay" : "Your travel desk"}
-        </h1>
+        <h1 className="mt-2 font-display text-4xl tracking-tight sm:text-5xl">{isAgency ? t("OPEN_BRIEFS") : t("YOUR_TRAVEL_DESK")}</h1>
         <p className="mt-3 text-muted">
           {isAgency
-            ? "Travelers already named the destination and the ceiling. Answer with a real package."
-            : "Post a brief. Agencies compete. You pick one offer and talk in the inbox."}
+            ? t("TRAVELERS_POST")
+            : t("POST_WHERE")}
         </p>
         {!isAgency ? (
           <Button asChild className="mt-6" size="lg">
-            <Link to="/trips/new">Post a trip request</Link>
+            <Link to="/trips/new">{t("POST_A_TRIP")}</Link>
           </Button>
         ) : null}
       </section>
 
       {!isAgency ? (
         <section className="space-y-4">
-          <h2 className="font-display text-2xl">Your requests</h2>
+          <h2 className="font-display text-2xl">{t("YOUR_TRAVEL_DESK")}</h2>
           {mine.length === 0 ? (
-            <Empty text="No requests yet. Post one and agencies will bid." />
+            <Empty text={t("NO_REQUESTS_YET")} />
           ) : (
             <Grid trips={mine} />
           )}
         </section>
       ) : (
         <section className="space-y-4">
-          <h2 className="font-display text-2xl">Your bids</h2>
-          {mine.length === 0 ? <Empty text="You have not bid yet." /> : <Grid trips={mine} />}
+          <h2 className="font-display text-2xl">{t("BIDS")}</h2>
+          {mine.length === 0 ? <Empty text={t("YOU_HAVE_NOT_BID")} /> : <Grid trips={mine} />}
         </section>
       )}
 
       <section className="space-y-4">
-        <h2 className="font-display text-2xl">{isAgency ? "Marketplace" : "Also open"}</h2>
-        {trips.length === 0 ? <Empty text="Nothing open right now." /> : <Grid trips={trips} />}
+        <h2 className="font-display text-2xl">{isAgency ? t("MARKETPLACE") : t("ALSO_OPEN")}</h2>
+        {trips.length === 0 ? <Empty text={t("NOTHING_OPEN")} /> : <Grid trips={trips} />}
       </section>
     </div>
   );

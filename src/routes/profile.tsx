@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import t from "@/lib/i18n";
 import { useEffect, useState, type FormEvent } from "react";
 import { RequireAuth } from "@/components/require-auth";
 import { Button } from "@/components/ui/button";
@@ -50,8 +51,8 @@ function ProfilePage() {
 
   return (
     <div className="mx-auto max-w-xl">
-      <h1 className="font-display text-4xl tracking-tight">Profile</h1>
-      <p className="mt-2 text-muted">This is what agencies and travelers see on your bids and briefs.</p>
+      <h1 className="font-display text-4xl tracking-tight">{t("PROFILE")}</h1>
+      <p className="mt-2 text-muted">{t("PROFILE_DESC")}</p>
       <form onSubmit={onSubmit} className="mt-8 space-y-4 rounded-[var(--radius-xl)] border border-border bg-bg-elevated p-6">
         <div className="grid gap-2 sm:grid-cols-2">
           {(["traveler", "agency"] as const).map((r) => (
@@ -64,32 +65,32 @@ function ProfilePage() {
                 role === r ? "border-ink bg-surface" : "border-border",
               )}
             >
-              {r}
+              {r === "traveler" ? t("ROLE_TRAVELER") : t("ROLE_AGENCY")}
             </button>
           ))}
         </div>
         <div className="grid gap-1.5">
-          <Label htmlFor="displayName">Name</Label>
+          <Label htmlFor="displayName">{t("NAME")}</Label>
           <Input id="displayName" name="displayName" defaultValue={profile.displayName} required />
         </div>
         <div className="grid gap-1.5">
-          <Label htmlFor="company">Agency / company</Label>
+          <Label htmlFor="company">{t("AGENCY_COMPANY")}</Label>
           <Input id="company" name="company" defaultValue={profile.company} />
         </div>
         <div className="grid gap-1.5">
-          <Label htmlFor="city">City</Label>
+          <Label htmlFor="city">{t("CITY")}</Label>
           <Input id="city" name="city" defaultValue={profile.city} />
         </div>
         <div className="grid gap-1.5">
-          <Label htmlFor="phone">Phone</Label>
+          <Label htmlFor="phone">{t("PHONE")}</Label>
           <Input id="phone" name="phone" defaultValue={profile.phone} />
         </div>
         <div className="grid gap-1.5">
-          <Label htmlFor="bio">Bio</Label>
+          <Label htmlFor="bio">{t("BIO")}</Label>
           <Textarea id="bio" name="bio" defaultValue={profile.bio} />
         </div>
-        {saved ? <p className="text-sm text-ok">Saved.</p> : null}
-        <Button type="submit">Save profile</Button>
+        {saved ? <p className="text-sm text-ok">{t("SAVED")}</p> : null}
+        <Button type="submit">{t("SAVE_PROFILE")}</Button>
       </form>
     </div>
   );

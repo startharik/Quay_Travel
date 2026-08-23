@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input, Textarea } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useCurrentUser } from "@/lib/auth/use-current-user";
+import t from "@/lib/i18n";
 import { getMyProfile, saveProfile } from "@/lib/quay-api";
 import type { Role } from "@/lib/quay-types";
 import { cn } from "@/lib/utils";
@@ -41,7 +42,7 @@ function Onboarding() {
     await saveProfile({
       data: {
         role,
-        displayName: String(data.get("displayName") || user?.displayName || "Traveler"),
+        displayName: String(data.get("displayName") || user?.displayName || t("ROLE_TRAVELER")),
         company: String(data.get("company") || ""),
         city: String(data.get("city") || ""),
         bio: String(data.get("bio") || ""),
@@ -53,9 +54,9 @@ function Onboarding() {
 
   return (
     <div className="mx-auto max-w-xl">
-      <p className="text-xs font-medium uppercase tracking-[0.18em] text-accent">Welcome</p>
-      <h1 className="mt-2 font-display text-4xl tracking-tight">Choose your desk</h1>
-      <p className="mt-3 text-muted">You can change this later in profile, but bids and requests follow the role.</p>
+      <p className="text-xs font-medium uppercase tracking-[0.18em] text-accent">{t("WELCOME")}</p>
+      <h1 className="mt-2 font-display text-4xl tracking-tight">{t("CHOOSE_YOUR_DESK")}</h1>
+      <p className="mt-3 text-muted">{t("CAN_CHANGE_LATER")}</p>
 
       <form onSubmit={onSubmit} className="mt-8 space-y-5 rounded-[var(--radius-xl)] border border-border bg-bg-elevated p-6">
         <div className="grid gap-2 sm:grid-cols-2">
@@ -69,37 +70,37 @@ function Onboarding() {
                 role === r ? "border-ink bg-surface" : "border-border",
               )}
             >
-              <span className="block font-medium capitalize">{r}</span>
+              <span className="block font-medium capitalize">{r === "traveler" ? t("ROLE_TRAVELER") : t("ROLE_AGENCY")}</span>
               <span className="mt-1 block text-sm text-muted">
-                {r === "traveler" ? "Post a brief and pick an offer." : "Browse open briefs and bid packages."}
+                {r === "traveler" ? t("POST_BRIEF_PICK_OFFER") : t("BROWSE_OPEN_BRIEFS")}
               </span>
             </button>
           ))}
         </div>
         <div className="grid gap-1.5">
-          <Label htmlFor="displayName">Your name</Label>
+          <Label htmlFor="displayName">{t("YOUR_NAME")}</Label>
           <Input id="displayName" name="displayName" required defaultValue={user?.displayName ?? ""} />
         </div>
         {role === "agency" ? (
           <div className="grid gap-1.5">
-            <Label htmlFor="company">Agency name</Label>
+            <Label htmlFor="company">{t("AGENCY_NAME")}</Label>
             <Input id="company" name="company" placeholder="Atlas & Co" />
           </div>
         ) : null}
         <div className="grid gap-1.5">
-          <Label htmlFor="city">City</Label>
+          <Label htmlFor="city">{t("CITY")}</Label>
           <Input id="city" name="city" placeholder="Athens" />
         </div>
         <div className="grid gap-1.5">
-          <Label htmlFor="phone">Phone (optional)</Label>
+          <Label htmlFor="phone">{t("PHONE_OPTIONAL")}</Label>
           <Input id="phone" name="phone" />
         </div>
         <div className="grid gap-1.5">
-          <Label htmlFor="bio">Short bio</Label>
-          <Textarea id="bio" name="bio" placeholder="What you look for, or what you sell." />
+          <Label htmlFor="bio">{t("SHORT_BIO")}</Label>
+          <Textarea id="bio" name="bio" placeholder="ما الذي تبحث عنه أو ما الذي تبيعه." />
         </div>
         <Button type="submit" size="lg">
-          Enter the desk
+          {t("ENTER_THE_DESK")}
         </Button>
       </form>
     </div>

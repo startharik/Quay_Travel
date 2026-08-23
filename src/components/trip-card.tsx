@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Calendar, Users } from "lucide-react";
 import { StatusPill } from "@/components/status-pill";
+import t from "@/lib/i18n";
 import { lodgingLabel, type TripRequest } from "@/lib/quay-types";
 import { formatMoney, formatRange, nightsBetween } from "@/lib/utils";
 
@@ -32,12 +33,12 @@ export function TripCard({ trip }: { trip: TripRequest }) {
             <Calendar className="size-3.5" />
             {formatRange(trip.startDate, trip.endDate)}
           </span>
-          <span>{nightsBetween(trip.startDate, trip.endDate)} nights</span>
+          <span>{nightsBetween(trip.startDate, trip.endDate)} {t("NIGHTS")}</span>
         </p>
         <p className="flex items-center gap-1.5 text-sm text-muted">
           <Users className="size-3.5" />
-          {trip.adults} adult{trip.adults === 1 ? "" : "s"}
-          {trip.children ? ` · ${trip.children} child${trip.children === 1 ? "" : "ren"}` : ""}
+          {trip.adults} {trip.adults === 1 ? t("ADULT") : t("ADULTS")}
+          {trip.children ? ` · ${trip.children} ${trip.children === 1 ? t("CHILD") : t("CHILDREN")}` : ""}
           <span className="text-subtle">·</span>
           {trip.tripType}
           <span className="text-subtle">·</span>
@@ -45,15 +46,15 @@ export function TripCard({ trip }: { trip: TripRequest }) {
         </p>
         <div className="flex items-end justify-between border-t border-border pt-3">
           <div>
-            <p className="text-xs text-muted">Budget</p>
+            <p className="text-xs text-muted">{t("BUDGET_LABEL")}</p>
             <p className="font-display text-xl tabular-nums">{formatMoney(trip.budget)}</p>
           </div>
           <div className="text-right">
             <p className="text-xs text-muted">
-              {trip.bidCount === 0 ? "No bids yet" : `${trip.bidCount} bid${trip.bidCount === 1 ? "" : "s"}`}
+              {trip.bidCount === 0 ? t("NO_BIDS_YET_SHORT") : `${trip.bidCount} ${t("BIDS_HEADER_PLURAL")}`}
             </p>
             {trip.lowestBid != null ? (
-              <p className="text-sm tabular-nums text-accent">from {formatMoney(trip.lowestBid)}</p>
+              <p className="text-sm tabular-nums text-accent">من {formatMoney(trip.lowestBid)}</p>
             ) : null}
           </div>
         </div>

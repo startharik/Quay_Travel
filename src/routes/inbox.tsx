@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { RequireAuth } from "@/components/require-auth";
 import { listInbox } from "@/lib/quay-api";
 import type { Thread } from "@/lib/quay-types";
+import t from "@/lib/i18n";
 
 export const Route = createFileRoute("/inbox")({ component: () => (
   <RequireAuth>
@@ -21,11 +22,11 @@ function Inbox() {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <h1 className="font-display text-4xl tracking-tight">Inbox</h1>
-      <p className="mt-2 text-muted">Threads live on each trip. Seed conversations appear for the sample briefs.</p>
+      <h1 className="font-display text-4xl tracking-tight">{t("INBOX")}</h1>
+      <p className="mt-2 text-muted">{t("THREADS_INFO")}</p>
       <div className="mt-8 divide-y divide-border rounded-[var(--radius-xl)] border border-border bg-bg-elevated">
         {threads.length === 0 ? (
-          <p className="px-5 py-12 text-center text-sm text-muted">No messages yet. Bid or post a request first.</p>
+          <p className="px-5 py-12 text-center text-sm text-muted">{t("NO_MESSAGES_YET")}</p>
         ) : (
           threads.map((t) => (
             <Link
