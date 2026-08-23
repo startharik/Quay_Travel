@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Quay",
+      "hasCanvas": false,
+      "bodyTextLen": 481,
+      "bodyTextHash": "d8a1640a9ca47de828f5f5c2c101e2f46968dcdaa10e198a22693fba9187bc9b",
+      "bodyTextPrefix": "Quay How it works Sign in REVERSE AUCTION FOR HOLIDAYS Name the ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Quay",
+      "hasCanvas": false,
+      "bodyTextLen": 468,
+      "bodyTextHash": "94f2580fb52116c561897763c813d28d8382651329d0c2306cbcdd156dad9447",
+      "bodyTextPrefix": "Quay Sign in REVERSE AUCTION FOR HOLIDAYS Name the trip. Let age",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-preview.json"
+}
