@@ -1,4 +1,4 @@
-import { authClient, authEnabled } from "./client";
+import { useEffect, useState } from "react";
 
 /** Normalized user shape used across the app, auth on or off. */
 export type AppUser = {
@@ -24,6 +24,40 @@ export const DEV_USER: AppUser = {
   profileImageUrl: null,
   isDevFallback: true,
 };
+
+const DEMO_USER_KEY = "quay.demo.user";
+
+export function saveDemoUser(name: string, email: string): AppUser {
+  const user: AppUser = {
+    id: DEV_USER.id,
+    displayName: name.trim() || email.split("@")[0] || "Demo traveler",
+    primaryEmail: email.trim() || DEV_USER.primaryEmail,
+    profileImageUrl: null,
+    isDevFallback: true,
+  };
+  if (typeof window !== "undefined") {
+    window.localStorage.setItem(DEMO_USER_KEY, JSON.stringify(user));
+    window.dispatchEvent(new Event("quay-demo-auth"));
+  }
+  return user;
+}
+
+export function clearDemoUser(): void {
+  if (typeof window !== "undefined") {
+    window.localStorage.removeItem(DEMO_USER_KEY);
+    window.dispatchEvent(new Event("quay-demo-auth"));
+  }
+}
+
+function readDemoUser(): AppUser | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const stored = window.localStorage.getItem(DEMO_USER_KEY);
+    return stored ? (JSON.parse(stored) as AppUser) : null;
+  } catch {
+    return null;
+  }
+}
 
 /** `useCurrentUserState()` result: the user plus the session-loading flag. */
 export type CurrentUserState = {
@@ -55,22 +89,20 @@ export type CurrentUserState = {
  * call keeps a stable hook order across every render of a given component.
  */
 export function useCurrentUserState(): CurrentUserState {
-  if (!authEnabled) return { user: DEV_USER, isPending: false };
-  // eslint-disable-next-line react-hooks/rules-of-hooks -- authEnabled is constant for the app's lifetime
-  const { data, isPending } = authClient.useSession();
-  const user = data?.user;
-  return {
-    user: user
-      ? {
-          id: user.id,
-          displayName: user.name ?? null,
-          primaryEmail: user.email ?? null,
-          profileImageUrl: user.image ?? null,
-          isDevFallback: false,
-        }
-      : null,
-    isPending,
-  };
+  const [user, setUser] = useState<AppUser | null>(null);
+  const [isPending, setPending] = useState(true);
+
+  useEffect(() => {
+    const refresh = () => {
+      setUser(readDemoUser());
+      setPending(false);
+    };
+    refresh();
+    window.addEventListener("quay-demo-auth", refresh);
+    return () => window.removeEventListener("quay-demo-auth", refresh);
+  }, []);
+
+  return { user, isPending };
 }
 
 /**

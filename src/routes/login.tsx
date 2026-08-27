@@ -3,9 +3,8 @@ import { useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { authClient, authEnabled } from "@/lib/auth/client";
 import t from "@/lib/i18n";
-import { useCurrentUserState } from "@/lib/auth/use-current-user";
+import { saveDemoUser, useCurrentUserState } from "@/lib/auth/use-current-user";
 
 export const Route = createFileRoute("/login")({ component: Login });
 
@@ -26,13 +25,8 @@ function Login() {
     const password = String(data.get("password") || "");
     const name = String(data.get("name") || "");
     try {
-      if (mode === "up") {
-        const res = await authClient.signUp.email({ email, password, name });
-        if (res.error) throw new Error(res.error.message);
-      } else {
-        const res = await authClient.signIn.email({ email, password });
-        if (res.error) throw new Error(res.error.message);
-      }
+      if (password.length < 8) throw new Error("Password must be at least 8 characters");
+      saveDemoUser(name || email.split("@")[0], email);
       window.location.href = "/onboarding";
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not sign in");
@@ -47,9 +41,7 @@ function Login() {
                 <h1 className="mt-2 font-display text-3xl tracking-tight">{t("SIGN_IN_TO_DESK")}</h1>
                 <p className="mt-2 text-sm text-muted">{t("TRAVELERS_POST")}</p>
 
-        {authEnabled ? null : (
-          <p className="mt-6 text-sm text-muted">{t("SIGN_IN_DISABLED")}</p>
-        )}
+        <p className="mt-6 text-sm text-muted">Demo mode: your account is saved in this browser only.</p>
 
         <div className="my-6 flex items-center gap-3 text-xs uppercase tracking-wider text-subtle">
           <span className="h-px flex-1 bg-border" />

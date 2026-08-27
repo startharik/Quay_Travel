@@ -1,7 +1,8 @@
 import { genericOAuthClient } from "better-auth/client/plugins";
 import { createAuthClient } from "better-auth/react";
-import { runPreSignInSignOut, runSignOut } from "../../../scripts/sign-out-plan.mjs";
+import { runPreSignInSignOut } from "../../../scripts/sign-out-plan.mjs";
 import { GROK_PROVIDERS } from "./providers";
+import { clearDemoUser } from "./use-current-user";
 
 /**
  * Better Auth client for this React SPA (browser-side).
@@ -35,7 +36,7 @@ export const authClient = createAuthClient({
  * with the key removed, sign-in is real in preview (baked preview client) and
  * when deployed (injected per-app client).
  */
-export const authEnabled = import.meta.env.VITE_AUTH_ENABLED !== "false";
+export const authEnabled = false;
 
 /** The upstream providers to render sign-in buttons for. */
 export { GROK_PROVIDERS };
@@ -219,18 +220,6 @@ function waitForPopupToken(popup: Window): Promise<string | null> {
  * preview the local clear is sufficient, so it always resolves.
  */
 export async function signOut(redirectTo = "/"): Promise<void> {
-  await runSignOut({
-    livePreview: inLivePreview(),
-    hasBearer: Boolean(getBearerToken()),
-    // Better Auth resolves with `{ error }` instead of rejecting, so surface a
-    // failed response as a rejection for the sequence to act on.
-    requestSignOut: async () => {
-      const { error } = await authClient.signOut();
-      if (error) throw new Error(error.message ?? "Sign-out failed");
-    },
-    clearToken: () => setBearerToken(null),
-    redirect: () => {
-      window.location.href = redirectTo;
-    },
-  });
+  clearDemoUser();
+  if (typeof window !== "undefined") window.location.href = redirectTo;
 }
