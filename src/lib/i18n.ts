@@ -176,8 +176,130 @@ export const translations: Record<string, string> = {
   STATUS_DECLINED: "مرفوض",
 };
 
+const englishTranslations: Record<string, string> = {
+  APP_NAME: "Quay",
+  DESCRIPTION: "Post a trip. Travel agencies compete with offers.",
+  REVERSE_AUCTION: "A reverse auction for holidays",
+  HERO_TAGLINE: "Name the trip. Let agencies compete.",
+  HERO_SUB: "Share where you want to go, your dates, group, and budget. Licensed agencies send real packages.",
+  SIGN_IN_TO_START: "Sign in to start",
+  SIGN_IN_TO_DESK: "Sign in to your desk",
+  OPEN_YOUR_DESK: "Open your desk",
+  HOW_IT_WORKS: "How it works",
+  HOW_QUAY_WORKS: "How Quay works",
+  GUIDE: "Guide",
+  FOR_TRAVELERS: "For travelers",
+  FOR_AGENCIES: "For agencies",
+  ACCOUNTS: "Accounts",
+  MARKETPLACE: "Marketplace",
+  DESK: "Desk",
+  NEW_REQUEST: "New request",
+  INBOX: "Inbox",
+  AGENCIES: "Agencies",
+  PROFILE: "Profile",
+  SIGN_IN: "Sign in",
+  SIGN_OUT: "Sign out",
+  OR_EMAIL: "or with email",
+  NAME: "Name",
+  EMAIL: "Email",
+  PASSWORD: "Password",
+  CREATE_ACCOUNT: "Create account",
+  SIGN_IN_WITH_EMAIL: "Sign in with email",
+  ALREADY_HAVE_ACCOUNT: "Already have an account? Sign in",
+  NEW_HERE_CREATE_ACCOUNT: "New here? Create an account",
+  BRIEF: "Brief",
+  BRIEF_DESC: "Destination, dates, travelers, and constraints.",
+  BIDS: "Offers",
+  BIDS_DESC: "Agencies submit a price, itinerary, and inclusions.",
+  AWARD: "Award",
+  AWARD_DESC: "Accept one offer and continue the conversation.",
+  POST_WHERE: "Post where you want to go, dates, travelers, and budget.",
+  TRAVELERS_POST: "Travelers post requests. Agencies send offers.",
+  OPEN_BRIEFS: "Open requests",
+  YOUR_TRAVEL_DESK: "Your travel desk",
+  POST_A_TRIP: "Post a trip request",
+  NO_REQUESTS_YET: "No requests yet. Post one and agencies will respond.",
+  YOU_HAVE_NOT_BID: "You have not submitted an offer yet.",
+  ALSO_OPEN: "Also open",
+  NOTHING_OPEN: "Nothing is open right now.",
+  THREADS_INFO: "Conversations appear inside each trip.",
+  NO_MESSAGES_YET: "No messages yet. Post a request or submit an offer first.",
+  AGENCIES_DESC: "Agencies with a Quay profile.",
+  INDEPENDENT: "Independent",
+  NO_BIO_YET: "No bio yet.",
+  PROFILE_DESC: "This is what travelers and agencies see on your profile.",
+  AGENCY_COMPANY: "Agency / company",
+  CITY: "City",
+  PHONE: "Phone",
+  BIO: "Bio",
+  SAVE_PROFILE: "Save profile",
+  SAVED: "Saved.",
+  ROLE_TRAVELER: "Traveler",
+  ROLE_AGENCY: "Agency",
+  WELCOME: "Welcome",
+  CHOOSE_YOUR_DESK: "Choose your desk",
+  CAN_CHANGE_LATER: "You can change this later in your profile.",
+  POST_BRIEF_PICK_OFFER: "Post a brief and choose an offer.",
+  BROWSE_OPEN_BRIEFS: "Browse open requests and submit offers.",
+  YOUR_NAME: "Your name",
+  AGENCY_NAME: "Agency name",
+  PHONE_OPTIONAL: "Phone (optional)",
+  SHORT_BIO: "Short bio",
+  ENTER_THE_DESK: "Enter the desk",
+  TELL_AGENCIES: "Tell agencies what you want",
+  BE_SPECIFIC: "Be specific. Unclear requests get unclear offers.",
+  DESTINATION: "Destination",
+  COUNTRY: "Country",
+  FLYING_FROM: "Flying from",
+  START: "Start date",
+  END: "End date",
+  DATES_FLEXIBLE: "Dates are flexible by a few days",
+  ADULTS: "Adults",
+  CHILDREN: "Children",
+  BUDGET: "Budget (USD, total)",
+  TRIP_TYPE: "Trip type",
+  LODGING: "Lodging",
+  MUST_HAVES: "Requirements and notes",
+  PUBLISH_REQUEST: "Publish request",
+  CANCEL: "Cancel",
+  BACK_TO_DESK: "Back to desk",
+  PLACE_A_BID: "Submit an offer",
+  UPDATE_YOUR_BID: "Update your offer",
+  YOUR_OFFER: "Your offer",
+  PACKAGE_TITLE: "Package title",
+  PRICE_USD: "Price (USD)",
+  WHY_THIS_PACKAGE: "Why this package",
+  INCLUDED_ONE_PER_LINE: "Included (one per line)",
+  OFFER_VALID_UNTIL: "Offer valid until",
+  SUBMIT_BID: "Submit offer",
+  SEND: "Send",
+  THREAD: "Conversation",
+  STATUS_OPEN: "Open",
+  STATUS_AWARDED: "Awarded",
+  STATUS_CLOSED: "Closed",
+  STATUS_PENDING: "Pending",
+  STATUS_ACCEPTED: "Accepted",
+  STATUS_DECLINED: "Declined",
+};
+
+export type Language = "ar" | "en";
+const LANGUAGE_KEY = "quay.language";
+
+export function getLanguage(): Language {
+  if (typeof window === "undefined") return "ar";
+  return window.localStorage.getItem(LANGUAGE_KEY) === "en" ? "en" : "ar";
+}
+
+export function setLanguage(language: Language): void {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(LANGUAGE_KEY, language);
+  document.documentElement.lang = language;
+  document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
+  window.location.reload();
+}
+
 export function t(key: string): string {
-  return translations[key] ?? key;
+  return (getLanguage() === "en" ? englishTranslations[key] : translations[key]) ?? translations[key] ?? key;
 }
 
 export default t;

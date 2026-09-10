@@ -16,7 +16,7 @@ import { useCurrentUserState } from "@/lib/auth/use-current-user";
 import { getMyProfile } from "@/lib/quay-api";
 import type { Profile } from "@/lib/quay-types";
 import { cn } from "@/lib/utils";
-import t from "@/lib/i18n";
+import t, { getLanguage, setLanguage } from "@/lib/i18n";
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -26,6 +26,9 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     setMounted(true);
+    const language = getLanguage();
+    document.documentElement.lang = language;
+    document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
   }, []);
 
   useEffect(() => {
@@ -81,6 +84,14 @@ export function AppShell({ children }: { children: ReactNode }) {
           </nav>
 
           <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setLanguage(getLanguage() === "ar" ? "en" : "ar")}
+              className="rounded-[var(--radius-sm)] border border-border px-2.5 py-1.5 text-xs font-medium text-muted transition-colors hover:bg-surface hover:text-ink"
+              aria-label={getLanguage() === "ar" ? "Switch to English" : "التبديل إلى العربية"}
+            >
+              {getLanguage() === "ar" ? "English" : "العربية"}
+            </button>
             {!mounted || isPending ? (
               <div className="h-9 w-28 animate-pulse rounded-[var(--radius-sm)] bg-surface" />
             ) : user ? (
