@@ -3,6 +3,7 @@ import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import { ArrowLeft, Calendar, MapPin, Users } from "lucide-react";
 import { BidCard } from "@/components/bid-card";
 import { RequireAuth } from "@/components/require-auth";
+import { PageError, PageLoading } from "@/components/page-state";
 import { DestinationArt } from "@/components/trip-card";
 import { StatusPill } from "@/components/status-pill";
 import { Button } from "@/components/ui/button";
@@ -29,6 +30,7 @@ function TripDetail() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [showBidForm, setShowBidForm] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
+  const [error, setError] = useState(false);
 
   async function reload() {
     const [{ trip: t, bids: b }, p] = await Promise.all([getTrip({ data: id }), getMyProfile()]);
@@ -43,10 +45,11 @@ function TripDetail() {
   }
 
   useEffect(() => {
-    void reload();
+    void reload().catch(() => setError(true));
   }, [id]);
 
-  if (trip === undefined) return <div className="h-64 animate-pulse rounded-[var(--radius-lg)] bg-surface" />;
+  if (error) return <PageError />;
+  if (trip === undefined) return <PageLoading className="h-64" />;
   if (!trip) {
     return (
       <div className="py-20 text-center">

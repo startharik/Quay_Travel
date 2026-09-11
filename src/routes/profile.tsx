@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import t from "@/lib/i18n";
 import { useEffect, useState, type FormEvent } from "react";
 import { RequireAuth } from "@/components/require-auth";
+import { PageError, PageLoading } from "@/components/page-state";
 import { Button } from "@/components/ui/button";
 import { Input, Textarea } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,6 +20,7 @@ function ProfilePage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [role, setRole] = useState<Role>("traveler");
   const [saved, setSaved] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     void getMyProfile().then((p) => {
@@ -28,10 +30,11 @@ function ProfilePage() {
       } else {
         window.location.href = "/onboarding";
       }
-    });
+    }).catch(() => setError(true));
   }, []);
 
-  if (!profile) return <div className="h-48 animate-pulse rounded-[var(--radius-lg)] bg-surface" />;
+  if (error) return <PageError />;
+  if (!profile) return <PageLoading />;
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();

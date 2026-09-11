@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { RequireAuth } from "@/components/require-auth";
+import { PageError, PageLoading } from "@/components/page-state";
 import { listInbox } from "@/lib/quay-api";
 import type { Thread } from "@/lib/quay-types";
 import t from "@/lib/i18n";
@@ -13,12 +14,14 @@ export const Route = createFileRoute("/inbox")({ component: () => (
 
 function Inbox() {
   const [threads, setThreads] = useState<Thread[] | null>(null);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
-    void listInbox().then(setThreads);
+    void listInbox().then(setThreads).catch(() => setError(true));
   }, []);
 
-  if (!threads) return <div className="h-48 animate-pulse rounded-[var(--radius-lg)] bg-surface" />;
+  if (error) return <PageError />;
+  if (!threads) return <PageLoading />;
 
   return (
     <div className="mx-auto max-w-2xl">

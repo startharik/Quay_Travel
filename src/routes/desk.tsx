@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { RequireAuth } from "@/components/require-auth";
 import { TripCard } from "@/components/trip-card";
+import { PageError, PageLoading } from "@/components/page-state";
 import { Button } from "@/components/ui/button";
 import { getMyProfile, listMarketplace, listMyBids, listMyTrips } from "@/lib/quay-api";
 import type { Profile, TripRequest } from "@/lib/quay-types";
@@ -17,29 +18,35 @@ function Desk() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [trips, setTrips] = useState<TripRequest[] | null>(null);
   const [mine, setMine] = useState<TripRequest[]>([]);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     void (async () => {
-      const p = await getMyProfile();
-      setProfile(p);
-      if (!p) {
-        window.location.href = "/onboarding";
-        return;
-      }
-      if (p.role === "agency") {
-        const [open, bids] = await Promise.all([listMarketplace(), listMyBids()]);
-        setTrips(open);
-        setMine(bids);
-      } else {
-        const [own, open] = await Promise.all([listMyTrips(), listMarketplace()]);
-        setMine(own);
-        setTrips(open);
+      try {
+        const p = await getMyProfile();
+        setProfile(p);
+        if (!p) {
+          window.location.href = "/onboarding";
+          return;
+        }
+        if (p.role === "agency") {
+          const [open, bids] = await Promise.all([listMarketplace(), listMyBids()]);
+          setTrips(open);
+          setMine(bids);
+        } else {
+          const [own, open] = await Promise.all([listMyTrips(), listMarketplace()]);
+          setMine(own);
+          setTrips(open);
+        }
+      } catch {
+        setError(true);
       }
     })();
   }, []);
 
+  if (error) return <PageError />;
   if (!profile || !trips) {
-    return <div className="h-64 animate-pulse rounded-[var(--radius-lg)] bg-surface" />;
+    return <PageLoading className="h-64" />;
   }
 
   const isAgency = profile.role === "agency";

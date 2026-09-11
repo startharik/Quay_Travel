@@ -1,4 +1,5 @@
 import { pendingMigrations } from "../../scripts/migration-plan.mjs";
+import { readFile } from "node:fs/promises";
 
 /** Which database backend is active. */
 export type DbSource = "neon" | "pglite";
@@ -16,7 +17,9 @@ const databaseUrl =
  * the app has a working database even with nothing configured — the live preview
  * included. Swap in Neon later by just setting `DATABASE_URL`; no code changes.
  */
-export const dbSource: DbSource = databaseUrl ? "neon" : "pglite";
+// This project is a test/demo app. Keep all data in the embedded PGlite
+// database even if a hosting provider exposes a DATABASE_URL.
+export const dbSource: DbSource = "pglite";
 
 /**
  * Minimal shared SQL surface, satisfied by both Neon and PGLite. Both the
@@ -111,7 +114,18 @@ async function createPgliteSql(): Promise<Sql> {
   // data survives source edits (it resets on dev-server restart).
   globalRef.__pgliteInstance__ ??= (async () => {
     const { PGlite } = await import("@electric-sql/pglite");
+    let pgliteData: Buffer;
+    try {
+      // Nitro places emitted server assets beside the deployed function.
+      pgliteData = await readFile(new URL("../assets/pglite.data", import.meta.url));
+    } catch {
+      // Local Vite runs use the package asset directly.
+      pgliteData = await readFile(
+        new URL("../../node_modules/@electric-sql/pglite/dist/pglite.data", import.meta.url),
+      );
+    }
     const pg = new PGlite({
+      fsBundle: new Blob([new Uint8Array(pgliteData).buffer as ArrayBuffer]),
       parsers: {
         [OID_INT8]: Number,
         [OID_DATE]: identity,
